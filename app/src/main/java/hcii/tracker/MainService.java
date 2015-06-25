@@ -17,61 +17,45 @@ import com.aware.Aware_Preferences;
 /**s
  * Created by Connor on 6/25/2015.
  */
-public class MainService extends IntentService {
+public class MainService extends Service {
 
 
     public static final Uri ACTIVITY_URI = Uri.parse("content://com.aware.plugin.google.activity_recognition.provider/plugin_google_activity_recognition");
 
-    public MainService(){
-        super("MainService");
-    }
-
 
    public void onCreate(){
 
-        Log.d("SERVICE", "Service created!");
+       Log.d("SERVICE", "Service created!");
+
+       Context context = this;
+       //Activate Accelerometer
+       Aware.setSetting(this, Aware_Preferences.STATUS_ACCELEROMETER, true);
+       //Set sampling frequency
+       Aware.setSetting(this, Aware_Preferences.FREQUENCY_ACCELEROMETER, 200000);
+       //Apply settings
+       sendBroadcast(new Intent(Aware.ACTION_AWARE_REFRESH));
+       //Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.activity_recognition");
+       //Activate programmatically any sensors/plugins you need here
+       //e.g., Aware.setSetting(this, Aware_Preferences.STATUS_ACCELEROMETER,true);
+
+       Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.activity_recognition");
+
+       Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.fused_location");
+
+       Aware.setSetting(getApplicationContext(), "frequency_google_fused_location", 60,
+               "com.aware.plugin.google.fused_location");
+
+       Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.fused_location");
+
+       ActivityRecognitionObserver so = new ActivityRecognitionObserver(new Handler());
+       getContentResolver().registerContentObserver(ACTIVITY_URI, true, so);
+       Log.d("SERVICE", "Observer registered");
 
     }
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
-    }
-
-    @Override
-    protected void onHandleIntent(Intent intent) {
-        Log.d("SERVICE", "Handle");
-    }
-
-
-    public int onStartCommand(Intent intent, int i, int u) {
-        Log.d("SERVICE", "Start command");
-
-        Context context = this;
-        //Activate Accelerometer
-        Aware.setSetting(this, Aware_Preferences.STATUS_ACCELEROMETER, true);
-        //Set sampling frequency
-        Aware.setSetting(this, Aware_Preferences.FREQUENCY_ACCELEROMETER, 200000);
-        //Apply settings
-        sendBroadcast(new Intent(Aware.ACTION_AWARE_REFRESH));
-        //Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.activity_recognition");
-        //Activate programmatically any sensors/plugins you need here
-        //e.g., Aware.setSetting(this, Aware_Preferences.STATUS_ACCELEROMETER,true);
-
-        Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.activity_recognition");
-
-        Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.fused_location");
-
-        Aware.setSetting(getApplicationContext(), "frequency_google_fused_location", 60,
-                "com.aware.plugin.google.fused_location");
-
-        Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.fused_location");
-
-        ActivityRecognitionObserver so = new ActivityRecognitionObserver(new Handler());
-        getContentResolver().registerContentObserver(ACTIVITY_URI, true, so);
-        Log.d("SERVICE", "Observer registered");
-
-        return 0;
     }
 
     public class ActivityRecognitionObserver extends ContentObserver {
@@ -97,15 +81,17 @@ public class MainService extends IntentService {
                     Aware.setSetting(getApplicationContext(), "frequency_google_fused_location", 60,
                             "com.aware.plugin.google.activity_recognition");
                     Log.d("OBSERVER", "Recognized in vehicle");
+                    Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.activity_recognition");
                 }
                 else {
                     Aware.setSetting(getApplicationContext(), "frequency_google_fused_location", 180,
                             "com.aware.plugin.google.activity_recognition");
                     Log.d("OBSERVER", "Recognized on foot");
+                    Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.activity_recognition");
                 }
             }
             if( activity != null && ! activity.isClosed() ) activity.close();
-            Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.activity_recognition");
+
         }
 
     }
