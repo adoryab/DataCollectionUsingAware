@@ -65,7 +65,7 @@ public class MainService extends IntentService {
         Aware.setSetting(getApplicationContext(), "frequency_google_fused_location", 60,
                 "com.aware.plugin.google.fused_location");
 
-        Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.activity_recognition");
+        Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.fused_location");
 
         ActivityRecognitionObserver so = new ActivityRecognitionObserver(new Handler());
         getContentResolver().registerContentObserver(ACTIVITY_URI, true, so);
