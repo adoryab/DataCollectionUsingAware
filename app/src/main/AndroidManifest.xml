@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="hcii.tracker" >
+    package="com.aware.plugin.hcii.tracker" >
 
     <application
         android:allowBackup="true"
@@ -9,225 +9,228 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:theme" >
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
 
         <service
-            android:name=".MainService"
-            android:exported="false" />
-
-        <receiver android:name="hcii.tracker.MainService$InstallationReceiver" >
-            <intent-filter>
-                <action android:name="Installations.EXTRA_PACKAGE_NAME" >
-                </action>
-            </intent-filter>
-        </receiver>
-
-
+            android:name="com.aware.plugin.hcii.tracker.Plugin"
+            android:exported="true" />
 
         <provider
             android:name="com.aware.providers.Bluetooth_Provider"
-            android:authorities="hcii.tracker.provider.bluetooth"
+            android:authorities="${applicationId}.provider.bluetooth"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Applications_Provider"
-            android:authorities="hcii.tracker.provider.applications"
+            android:authorities="${applicationId}.provider.applications"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Locations_Provider"
-            android:authorities="hcii.tracker.provider.locations"
+            android:authorities="${applicationId}.provider.locations"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Installations_Provider"
-            android:authorities="hcii.tracker.provider.installations"
+            android:authorities="${applicationId}.provider.installations"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.ESM_Provider"
-            android:authorities="hcii.tracker.provider.esm"
+            android:authorities="${applicationId}.provider.esm"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Temperature_Provider"
-            android:authorities="hcii.tracker.provider.temperature"
+            android:authorities="${applicationId}.provider.temperature"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Linear_Accelerometer_Provider"
-            android:authorities="hcii.tracker.provider.accelerometer.linear"
+            android:authorities="${applicationId}.provider.accelerometer.linear"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Gravity_Provider"
-            android:authorities="hcii.tracker.provider.gravity"
+            android:authorities="${applicationId}.provider.gravity"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Barometer_Provider"
-            android:authorities="hcii.tracker.provider.barometer"
+            android:authorities="${applicationId}.provider.barometer"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Magnetometer_Provider"
-            android:authorities="hcii.tracker.provider.magnetometer"
+            android:authorities="${applicationId}.provider.magnetometer"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Proximity_Provider"
-            android:authorities="hcii.tracker.provider.proximity"
+            android:authorities="${applicationId}.provider.proximity"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Light_Provider"
-            android:authorities="hcii.tracker.provider.light"
+            android:authorities="${applicationId}.provider.light"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Telephony_Provider"
-            android:authorities="hcii.tracker.provider.telephony"
+            android:authorities="${applicationId}.provider.telephony"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Aware_Provider"
-            android:authorities="hcii.tracker.provider.aware"
+            android:authorities="${applicationId}.provider.aware"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Rotation_Provider"
-            android:authorities="hcii.tracker.provider.rotation"
+            android:authorities="${applicationId}.provider.rotation"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.WiFi_Provider"
-            android:authorities="hcii.tracker.provider.wifi"
+            android:authorities="${applicationId}.provider.wifi"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Accelerometer_Provider"
-            android:authorities="hcii.tracker.provider.accelerometer"
+            android:authorities="${applicationId}.provider.accelerometer"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Gyroscope_Provider"
-            android:authorities="hcii.tracker.provider.gyroscope"
+            android:authorities="${applicationId}.provider.gyroscope"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Traffic_Provider"
-            android:authorities="hcii.tracker.provider.traffic"
+            android:authorities="${applicationId}.provider.traffic"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Mqtt_Provider"
-            android:authorities="hcii.tracker.provider.mqtt"
+            android:authorities="${applicationId}.provider.mqtt"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Processor_Provider"
-            android:authorities="hcii.tracker.provider.processor"
+            android:authorities="${applicationId}.provider.processor"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.TimeZone_Provider"
-            android:authorities="hcii.tracker.provider.timezone"
+            android:authorities="${applicationId}.provider.timezone"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Battery_Provider"
-            android:authorities="hcii.tracker.provider.battery"
+            android:authorities="${applicationId}.provider.battery"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Screen_Provider"
-            android:authorities="hcii.tracker.provider.screen"
+            android:authorities="${applicationId}.provider.screen"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Network_Provider"
-            android:authorities="hcii.tracker.provider.network"
+            android:authorities="${applicationId}.provider.network"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Communication_Provider"
-            android:authorities="hcii.tracker.provider.communication"
+            android:authorities="${applicationId}.provider.communication"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
         <provider
             android:name="com.aware.providers.Keyboard_Provider"
-            android:authorities="hcii.tracker.provider.keyboard"
+            android:authorities="${applicationId}.provider.keyboard"
             android:exported="true"
             android:readPermission="com.aware.READ_CONTEXT_DATA"
-            android:writePermission="com.aware.WRITE_CONTEXT_DATA" >
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            >
         </provider>
 
-        <receiver
-            android:name=".InstallationReceiver"
-            android:enabled="true"
-            android:exported="true" >
-        </receiver>
     </application>
 
 </manifest>

@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/DataCollectionUsingAware.iml" filepath="$PROJECT_DIR$/DataCollectionUsingAware.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tracker.iml" filepath="$PROJECT_DIR$/tracker.iml" />
     </modules>
   </component>
 </project>
-
