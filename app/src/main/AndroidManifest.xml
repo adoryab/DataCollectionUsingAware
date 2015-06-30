@@ -10,6 +10,13 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:theme" >
 
+        <activity android:name="com.aware.plugin.hcii.tracker.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
         <service
             android:name="com.aware.plugin.hcii.tracker.Plugin"
             android:exported="true" />
