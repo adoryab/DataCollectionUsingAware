@@ -17,9 +17,25 @@
             </intent-filter>
         </activity>
 
+        <receiver android:name="com.aware.Aware$PluginMonitor" android:exported="true" android:enabled="true" tools:replace="android:enabled">
+
+
+            <intent-filter>
+
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+
+            </intent-filter>
+
+        </receiver>
+
         <service
             android:name="com.aware.plugin.hcii.tracker.Plugin"
             android:exported="true" />
+
 
         <provider
             android:name="com.aware.providers.Bluetooth_Provider"
@@ -239,5 +255,6 @@
         </provider>
 
     </application>
+
 
 </manifest>
