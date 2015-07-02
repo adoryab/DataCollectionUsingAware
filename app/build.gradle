@@ -8,7 +8,7 @@ android {
         applicationId "com.aware.plugin.hcii.tracker"
         minSdkVersion 10
         targetSdkVersion 22
-        versionCode 1
+        versionCode 2
         versionName "1.0"
     }
     buildTypes {
@@ -20,10 +20,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.awareframework:aware-core:+@aar'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'com.android.support:cardview-v7:22.2.0'
-
+    compile project(':com.aware.plugin.google.activity_recognition')
+    compile project(':com.aware.plugin.fused_location')
 }

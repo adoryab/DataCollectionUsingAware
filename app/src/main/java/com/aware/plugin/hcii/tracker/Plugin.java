@@ -1,6 +1,8 @@
 package com.aware.plugin.hcii.tracker;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -9,7 +11,10 @@ import android.util.Log;
 
 import com.aware.Aware;
 import com.aware.Aware_Preferences;
+import com.aware.providers.Aware_Provider;
 import com.aware.utils.Aware_Plugin;
+
+import java.util.UUID;
 
 /**
  * Created by denzil on 29/06/15.
@@ -18,17 +23,44 @@ public class Plugin extends Aware_Plugin {
 
     private static Uri ACTIVITY_URI; //only set once we detect plugin is installed!
 
+    private static final String pkg_google_fused = "com.aware.plugin.google.fused_location";
+    private static final String pkg_google_activity_recog = "com.aware.plugin.google.activity_recognition";
+
+    private SharedPreferences prefs;
+
     //Called once, when your plugin is started
     @Override
     public void onCreate() {
         super.onCreate();
 
+        prefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+
+        Intent aware = new Intent(this, Aware.class);
+        startService(aware);
+
+        if( ! prefs.contains("device_id") ) {
+            UUID uuid = UUID.randomUUID();
+
+            ContentValues newId = new ContentValues();
+            newId.put(Aware_Provider.Aware_Settings.SETTING_KEY, Aware_Preferences.DEVICE_ID);
+            newId.put(Aware_Provider.Aware_Settings.SETTING_VALUE, uuid.toString());
+            newId.put(Aware_Provider.Aware_Settings.SETTING_PACKAGE_NAME, "com.aware");
+            getContentResolver().insert(Aware_Provider.Aware_Settings.CONTENT_URI, newId);
+
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("device_id", uuid.toString());
+            editor.apply();
+        }
+
+        //Turn debugging messages on
+        Aware.setSetting(this, Aware_Preferences.DEBUG_FLAG, true);
+
         TAG = "HCII::TRACKER";
         DEBUG = Aware.getSetting(this, Aware_Preferences.DEBUG_FLAG).equals("true");
 
         //Start plugins first, before setting settings for them. If the phone doesn't have them, download will be requested. Once installed, AWARE will automatically start them.
-        Aware.startPlugin(this, "com.aware.plugin.google.fused_location");
-        Aware.startPlugin(this, "com.aware.plugin.google.activity_recognition");
+        Aware.startPlugin(this, pkg_google_fused);
+        Aware.startPlugin(this, pkg_google_activity_recog);
 
         //Activate installations sensor
         Aware.setSetting(this, Aware_Preferences.STATUS_INSTALLATIONS, true);
@@ -40,18 +72,18 @@ public class Plugin extends Aware_Plugin {
         Aware.setSetting(this, Aware_Preferences.FREQUENCY_ACCELEROMETER, 200000); //this is too fast! This is a millisecond delay between samples. See documentation of what values it expects!
 
         //Set Google Activity Recognition settings - see online documentation for setting values
-        Aware.setSetting(this, "status_plugin_google_activity_recognition", true, "com.aware.plugin.google.activity_recognition");
-        Aware.setSetting(this, "frequency_plugin_google_activity_recognition", 60, "com.aware.plugin.google.activity_recognition");
+        Aware.setSetting(this, "status_plugin_google_activity_recognition", true, pkg_google_activity_recog);
+        Aware.setSetting(this, "frequency_plugin_google_activity_recognition", 60, pkg_google_activity_recog);
 
         //Set Google Fused Location settings - See online documentation for settings values
-        Aware.setSetting(this, "status_google_fused_location", true, "com.aware.plugin.google.fused_location");
-        Aware.setSetting(this, "frequency_google_fused_location", 60, "com.aware.plugin.google.fused_location");
-        Aware.setSetting(this, "max_frequency_google_fused_location", 60, "com.aware.plugin.google.fused_location");
-        Aware.setSetting(this, "accuracy_google_fused_location", 102, "com.aware.plugin.google.fused_location");
+        Aware.setSetting(this, "status_google_fused_location", true, pkg_google_fused);
+        Aware.setSetting(this, "frequency_google_fused_location", 60, pkg_google_fused);
+        Aware.setSetting(this, "max_frequency_google_fused_location", 60, pkg_google_fused);
+        Aware.setSetting(this, "accuracy_google_fused_location", 102, pkg_google_fused);
 
         //Apply settings again
-        Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.fused_location");
-        Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.activity_recognition");
+        Aware.startPlugin(getApplicationContext(), pkg_google_fused);
+        Aware.startPlugin(getApplicationContext(), pkg_google_activity_recog);
 
         ACTIVITY_URI = Uri.parse("content://com.aware.plugin.google.activity_recognition.provider/plugin_google_activity_recognition");
         activityObs = new ActivityRecognitionObserver(new Handler());
@@ -67,8 +99,8 @@ public class Plugin extends Aware_Plugin {
         DEBUG = Aware.getSetting(this, Aware_Preferences.DEBUG_FLAG).equals("true");
 
         //Ask AWARE to make sure plugins are still running
-        Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.fused_location");
-        Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.activity_recognition");
+        Aware.startPlugin(getApplicationContext(), pkg_google_fused);
+        Aware.startPlugin(getApplicationContext(), pkg_google_activity_recog);
 
         return super.onStartCommand(intent, flags, startId);
     }
@@ -78,10 +110,10 @@ public class Plugin extends Aware_Plugin {
     public void onDestroy() {
         super.onDestroy();
 
-        Aware.stopPlugin(this, "com.aware.plugin.google.fused_location");
-        Aware.stopPlugin(this, "com.aware.plugin.google.activity_recognition");
-        Aware.setSetting(this, "status_plugin_google_activity_recognition", false, "com.aware.plugin.google.activity_recognition");
-        Aware.setSetting(this, "status_google_fused_location", false, "com.aware.plugin.google.fused_location");
+        Aware.stopPlugin(this, pkg_google_fused);
+        Aware.stopPlugin(this, pkg_google_activity_recog);
+        Aware.setSetting(this, "status_plugin_google_activity_recognition", false, pkg_google_activity_recog);
+        Aware.setSetting(this, "status_google_fused_location", false, pkg_google_fused);
         Aware.setSetting(this, Aware_Preferences.STATUS_INSTALLATIONS, false);
         Aware.setSetting(this, Aware_Preferences.STATUS_ACCELEROMETER, false);
 
@@ -92,7 +124,7 @@ public class Plugin extends Aware_Plugin {
         sendBroadcast(new Intent(Aware.ACTION_AWARE_REFRESH));
     }
 
-    private static ActivityRecognitionObserver activityObs;
+    private ActivityRecognitionObserver activityObs;
     public class ActivityRecognitionObserver extends ContentObserver {
         public ActivityRecognitionObserver(Handler handler) {
             super(handler);
@@ -102,19 +134,19 @@ public class Plugin extends Aware_Plugin {
             super.onChange(selfChange);
 
             // Get the latest recorded value
-            Log.d("OBSERVER", "Change in activity data detected");
+            Log.d(TAG, "Change in activity data detected");
             Cursor activity = getContentResolver().query(Plugin.ACTIVITY_URI, null, null, null, "activity_name DESC LIMIT 1"); //space issue with SQL here...
             if( activity != null && activity.moveToFirst() ) {
                 // Here we read the value
                 String activity_name = activity.getString(activity.getColumnIndex("activity_name"));
                 if ( activity_name.equals("in_vehicle") ){
-                    Aware.setSetting(getApplicationContext(), "frequency_google_fused_location", 60, "com.aware.plugin.google.activity_recognition");
-                    Log.d("OBSERVER", "Recognized in vehicle");
-                    Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.activity_recognition");
+                    Aware.setSetting(getApplicationContext(), "frequency_google_fused_location", 60, pkg_google_activity_recog);
+                    Log.d(TAG, "Recognized in vehicle");
+                    Aware.startPlugin(getApplicationContext(), pkg_google_activity_recog);
                 } else {
-                    Aware.setSetting(getApplicationContext(), "frequency_google_fused_location", 180, "com.aware.plugin.google.activity_recognition");
-                    Log.d("OBSERVER", "Recognized on foot");
-                    Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.activity_recognition");
+                    Aware.setSetting(getApplicationContext(), "frequency_google_fused_location", 180, pkg_google_activity_recog);
+                    Log.d(TAG, "Recognized on foot");
+                    Aware.startPlugin(getApplicationContext(), pkg_google_activity_recog);
                 }
             }
             if( activity != null && ! activity.isClosed() ) activity.close();

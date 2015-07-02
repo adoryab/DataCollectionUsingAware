@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DataCollectionUsingAware.iml" filepath="$PROJECT_DIR$/DataCollectionUsingAware.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/com.aware.plugin.fused_location/com.aware.plugin.fused_location.iml" filepath="$PROJECT_DIR$/com.aware.plugin.fused_location/com.aware.plugin.fused_location.iml" />
+      <module fileurl="file://$PROJECT_DIR$/com.aware.plugin.google.activity_recognition/com.aware.plugin.google.activity_recognition.iml" filepath="$PROJECT_DIR$/com.aware.plugin.google.activity_recognition/com.aware.plugin.google.activity_recognition.iml" />
     </modules>
   </component>
 </project>

@@ -3,12 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.aware.plugin.hcii.tracker" >
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon, android:theme" >
+        tools:replace="android:icon, android:theme">
 
         <activity android:name="com.aware.plugin.hcii.tracker.MainActivity">
             <intent-filter>
@@ -18,24 +22,24 @@
         </activity>
 
         <receiver android:name="com.aware.Aware$PluginMonitor" android:exported="true" android:enabled="true" tools:replace="android:enabled">
-
-
             <intent-filter>
-
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
-
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
-
                 <data android:scheme="package" />
-
             </intent-filter>
-
         </receiver>
 
         <service
             android:name="com.aware.plugin.hcii.tracker.Plugin"
             android:exported="true" />
 
+        <provider
+            android:name="com.aware.plugin.google.activity_recognition.Google_AR_Provider"
+            android:authorities="${applicationId}.provider"
+            android:exported="true"
+            android:readPermission="com.aware.READ_CONTEXT_DATA"
+            android:writePermission="com.aware.WRITE_CONTEXT_DATA"
+            tools:replace="android:authorities" />
 
         <provider
             android:name="com.aware.providers.Bluetooth_Provider"

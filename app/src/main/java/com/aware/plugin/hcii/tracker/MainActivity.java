@@ -19,13 +19,13 @@ public class MainActivity extends Activity {
         Intent startAware = new Intent(this, Aware.class);
         startService(startAware);
 
-        Aware.startPlugin(this, getPackageName()); //set ourselves
+        Aware.startPlugin(this, getPackageName()); //start our plugin
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
-        Aware.stopPlugin(this, getPackageName()); //stop plugin if you want it to terminate if you press back button on the activity
+//        Aware.stopPlugin(this, getPackageName()); //stop plugin if you want it to terminate if you press back button on the activity
     }
 }
