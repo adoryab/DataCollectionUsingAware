@@ -13,6 +13,7 @@ import com.aware.Aware;
 import com.aware.Aware_Preferences;
 import com.aware.providers.Aware_Provider;
 import com.aware.utils.Aware_Plugin;
+import com.aware.utils.WebserviceHelper;
 
 import java.util.UUID;
 
@@ -80,6 +81,8 @@ public class Plugin extends Aware_Plugin {
         Aware.setSetting(this, "frequency_google_fused_location", 60, pkg_google_fused);
         Aware.setSetting(this, "max_frequency_google_fused_location", 60, pkg_google_fused);
         Aware.setSetting(this, "accuracy_google_fused_location", 102, pkg_google_fused);
+        Aware.setSetting(this, Aware_Preferences.STATUS_WEBSERVICE, true);
+     //   Aware.setSetting(this, Aware_Preferences.WEBSERVICE_SERVER., “127.0.0.1”);
 
         //Apply settings again
         Aware.startPlugin(getApplicationContext(), pkg_google_fused);
@@ -90,6 +93,19 @@ public class Plugin extends Aware_Plugin {
         getContentResolver().registerContentObserver(ACTIVITY_URI, true, activityObs);
 
         sendBroadcast(new Intent(Aware.ACTION_AWARE_REFRESH));
+        if( DATABASE_TABLES != null && TABLES_FIELDS != null && CONTEXT_URIS != null) {
+            for (int i = 0; i < DATABASE_TABLES.length; i++) {
+                Intent webserviceHelper = new Intent(this, WebserviceHelper.class);
+                webserviceHelper.setAction(WebserviceHelper.ACTION_AWARE_WEBSERVICE_SYNC_TABLE);
+                webserviceHelper.putExtra(WebserviceHelper.EXTRA_TABLE, DATABASE_TABLES[i]);
+                webserviceHelper.putExtra(WebserviceHelper.EXTRA_FIELDS, TABLES_FIELDS[i]);
+                webserviceHelper.putExtra(WebserviceHelper.EXTRA_CONTENT_URI, CONTEXT_URIS[i].toString());
+                this.startService(webserviceHelper);
+            }
+        }else {
+            if( Aware.DEBUG ) Log.d(TAG,"No database to backup!");
+        }
+
     }
 
     //Method called automatically by AWARE every 5 minutes to make sure the plugin is running

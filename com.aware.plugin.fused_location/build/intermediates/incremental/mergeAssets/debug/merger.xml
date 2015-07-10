@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="/Users/denzil/AndroidStudioProjects/DataCollectionUsingAware/com.aware.plugin.fused_location/src/main/assets"/></dataSet><dataSet config="debug"><source path="/Users/denzil/AndroidStudioProjects/DataCollectionUsingAware/com.aware.plugin.fused_location/src/debug/assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/src/main/assets"/></dataSet><dataSet config="debug"><source path="/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/src/debug/assets"/></dataSet></merger>
