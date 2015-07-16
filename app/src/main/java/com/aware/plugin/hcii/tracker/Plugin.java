@@ -67,10 +67,10 @@ public class Plugin extends Aware_Plugin {
         Aware.setSetting(this, Aware_Preferences.STATUS_INSTALLATIONS, true);
 
         //Activate Accelerometer
-        Aware.setSetting(this, Aware_Preferences.STATUS_ACCELEROMETER, true);
+      //  Aware.setSetting(this, Aware_Preferences.STATUS_ACCELEROMETER, true);
 
         //Set sampling frequency
-        Aware.setSetting(this, Aware_Preferences.FREQUENCY_ACCELEROMETER, 200000); //this is too fast! This is a millisecond delay between samples. See documentation of what values it expects!
+      //  Aware.setSetting(this, Aware_Preferences.FREQUENCY_ACCELEROMETER, 200000); //this is too fast! This is a millisecond delay between samples. See documentation of what values it expects!
 
         //Set Google Activity Recognition settings - see online documentation for setting values
         Aware.setSetting(this, "status_plugin_google_activity_recognition", true, pkg_google_activity_recog);
@@ -81,7 +81,7 @@ public class Plugin extends Aware_Plugin {
         Aware.setSetting(this, "frequency_google_fused_location", 60, pkg_google_fused);
         Aware.setSetting(this, "max_frequency_google_fused_location", 60, pkg_google_fused);
         Aware.setSetting(this, "accuracy_google_fused_location", 102, pkg_google_fused);
-        Aware.setSetting(this, Aware_Preferences.STATUS_WEBSERVICE, true);
+      //  Aware.setSetting(this, Aware_Preferences.STATUS_WEBSERVICE, true);
      //   Aware.setSetting(this, Aware_Preferences.WEBSERVICE_SERVER., “127.0.0.1”);
 
         //Apply settings again
@@ -93,6 +93,7 @@ public class Plugin extends Aware_Plugin {
         getContentResolver().registerContentObserver(ACTIVITY_URI, true, activityObs);
 
         sendBroadcast(new Intent(Aware.ACTION_AWARE_REFRESH));
+        /*
         if( DATABASE_TABLES != null && TABLES_FIELDS != null && CONTEXT_URIS != null) {
             for (int i = 0; i < DATABASE_TABLES.length; i++) {
                 Intent webserviceHelper = new Intent(this, WebserviceHelper.class);
@@ -105,6 +106,7 @@ public class Plugin extends Aware_Plugin {
         }else {
             if( Aware.DEBUG ) Log.d(TAG,"No database to backup!");
         }
+        */
 
     }
 
@@ -131,7 +133,7 @@ public class Plugin extends Aware_Plugin {
         Aware.setSetting(this, "status_plugin_google_activity_recognition", false, pkg_google_activity_recog);
         Aware.setSetting(this, "status_google_fused_location", false, pkg_google_fused);
         Aware.setSetting(this, Aware_Preferences.STATUS_INSTALLATIONS, false);
-        Aware.setSetting(this, Aware_Preferences.STATUS_ACCELEROMETER, false);
+     //   Aware.setSetting(this, Aware_Preferences.STATUS_ACCELEROMETER, false);
 
         if( activityObs != null ) {
             getContentResolver().unregisterContentObserver(activityObs);

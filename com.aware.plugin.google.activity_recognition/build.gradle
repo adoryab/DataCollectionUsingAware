@@ -26,4 +26,5 @@ dependencies {
     compile 'com.google.android.gms:play-services:+'
     compile 'com.android.support:cardview-v7:+'
     compile 'com.awareframework:aware-core:+@aar'
+    compile 'com.loopj.android:android-async-http:1.4.7'
 }

@@ -13,7 +13,7 @@ import android.util.Log;
 
 import com.aware.Aware;
 import com.aware.Aware_Preferences;
-import com.aware.utils.Http;
+import com.aware.utils.Https;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -49,8 +49,10 @@ public class WebServiceHelper extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
        // String WEBSERVER = Aware.getSetting(getApplicationContext(), Aware_Preferences.WEBSERVICE_SERVER);
-        String WEBSERVER = "127.0.0.1";
+        String WEBSERVER = "epiwork.hcii.cs.cmu.edu/~afsaneh/connection.php";
+        Aware.setSetting(this, Aware_Preferences.STATUS_WEBSERVICE, true);
         //Fixed: not using webservices
+        Log.i(Aware.TAG, "boop");
         if( WEBSERVER.length() == 0 ) return;
 
         int batch_size = 10000; //default for phones
@@ -93,12 +95,12 @@ public class WebServiceHelper extends IntentService {
             fields.add(new BasicNameValuePair(EXTRA_FIELDS, TABLES_FIELDS));
 
             //Create table if doesn't exist on the remote webservice server
-            HttpResponse response = new Http(getApplicationContext()).dataPOST(WEBSERVER + "/" + DATABASE_TABLE + "/create_table", fields, true);
+            HttpResponse response = new Https(getApplicationContext()).dataPOST(WEBSERVER + "/" + DATABASE_TABLE + "/create_table", fields, true);
             if( response != null && response.getStatusLine().getStatusCode() == 200 ) {
                 if( DEBUG ) {
                     HttpResponse copy = response;
                     try {
-                        if( DEBUG ) Log.d(Aware.TAG, Http.undoGZIP(copy));
+                        if( DEBUG ) Log.d(Aware.TAG, Https.undoGZIP(copy));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -116,12 +118,12 @@ public class WebServiceHelper extends IntentService {
                     request.add(new BasicNameValuePair(Aware_Preferences.DEVICE_ID, DEVICE_ID));
 
                     //check the latest entry in remote database
-                    HttpResponse latest = new Http(getApplicationContext()).dataPOST(WEBSERVER + "/" + DATABASE_TABLE + "/latest", request, true);
+                    HttpResponse latest = new Https(getApplicationContext()).dataPOST(WEBSERVER + "/" + DATABASE_TABLE + "/latest", request, true);
                     if( latest == null ) return;
 
                     String data = "[]";
                     try {
-                        data = Http.undoGZIP(latest);
+                        data = Https.undoGZIP(latest);
                     } catch( IllegalStateException e ) {
                         Log.d(Aware.TAG,"Unable to connect to webservices...");
                     }
@@ -140,6 +142,7 @@ public class WebServiceHelper extends IntentService {
                     JSONArray remoteData = new JSONArray(data);
 
                     Cursor context_data;
+                    Log.i(Aware.TAG, "data is being retrieved");
                     if( remoteData.length() == 0 ) {
                         if( exists(columnsStr, "double_end_timestamp") ) {
                             context_data = getContentResolver().query(CONTENT_URI, null, "double_end_timestamp != 0" + study_condition, null, "timestamp ASC");
@@ -203,7 +206,8 @@ public class WebServiceHelper extends IntentService {
                                 request = new ArrayList<NameValuePair>();
                                 request.add(new BasicNameValuePair(Aware_Preferences.DEVICE_ID, DEVICE_ID));
                                 request.add(new BasicNameValuePair("data", context_data_entries.toString()));
-                                new Http(getApplicationContext()).dataPOST( WEBSERVER + "/" + DATABASE_TABLE + "/insert", request, true);
+                                new Https
+                                        (getApplicationContext()).dataPOST( WEBSERVER + "/" + DATABASE_TABLE + "/insert", request, true);
 
                                 context_data_entries = new JSONArray();
                             }
@@ -217,7 +221,7 @@ public class WebServiceHelper extends IntentService {
                             request = new ArrayList<NameValuePair>();
                             request.add(new BasicNameValuePair(Aware_Preferences.DEVICE_ID, DEVICE_ID));
                             request.add(new BasicNameValuePair("data", context_data_entries.toString()));
-                            new Http(getApplicationContext()).dataPOST( WEBSERVER + "/" + DATABASE_TABLE + "/insert", request, true);
+                            new Https(getApplicationContext()).dataPOST( WEBSERVER + "/" + DATABASE_TABLE + "/insert", request, true);
                         }
                         if( DEBUG ) Log.d(Aware.TAG, "Sync time: " + DateUtils.formatElapsedTime((System.currentTimeMillis()-start)/1000));
                     }
@@ -242,7 +246,7 @@ public class WebServiceHelper extends IntentService {
             if( Aware.DEBUG ) Log.d(Aware.TAG, "Clearing data..." + DATABASE_TABLE);
             ArrayList<NameValuePair> request = new ArrayList<NameValuePair>();
             request.add(new BasicNameValuePair(Aware_Preferences.DEVICE_ID, DEVICE_ID));
-            new Http(getApplicationContext()).dataPOST(WEBSERVER + "/" + DATABASE_TABLE + "/clear_table", request, true);
+            new Https(getApplicationContext()).dataPOST(WEBSERVER + "/" + DATABASE_TABLE + "/clear_table", request, true);
         }
     }
 }
