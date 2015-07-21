@@ -161,6 +161,8 @@ public class Algorithm extends IntentService {
                     String serverResponse = obj.getJSONObject(MESSAGE).getString(SERVER_STATUS);
                     Toast.makeText(getApplicationContext(), serverResponse, Toast.LENGTH_LONG).show();
 
+                    Log.i("ACTIVITY", serverResponse);
+
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(), "Server response might be invalid!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();

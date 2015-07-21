@@ -67,10 +67,10 @@ public class Plugin extends Aware_Plugin {
         Aware.setSetting(this, Aware_Preferences.STATUS_INSTALLATIONS, true);
 
         //Activate Accelerometer
-      //  Aware.setSetting(this, Aware_Preferences.STATUS_ACCELEROMETER, true);
+        Aware.setSetting(this, Aware_Preferences.STATUS_ACCELEROMETER, true);
 
         //Set sampling frequency
-      //  Aware.setSetting(this, Aware_Preferences.FREQUENCY_ACCELEROMETER, 200000); //this is too fast! This is a millisecond delay between samples. See documentation of what values it expects!
+        Aware.setSetting(this, Aware_Preferences.FREQUENCY_ACCELEROMETER, 1800000); //this is too fast! This is a millisecond delay between samples. See documentation of what values it expects!
 
         //Set Google Activity Recognition settings - see online documentation for setting values
         Aware.setSetting(this, "status_plugin_google_activity_recognition", true, pkg_google_activity_recog);
