@@ -41,7 +41,10 @@ public class Algorithm extends IntentService {
     private static final String SUCCESS = "success";
     private static final String MESSAGE = "message";
     private static final String SERVER_STATUS = "status";
-
+    public static final String LAST_LOCATION_TIMESTAMP = "lastLocationReport";
+    public static final String LAST_ACTIVITY_TIMESTAMP = "lastActivityReport";
+    public static final String ACTION_RESULT_RECEIVED = "result_received";
+    public static final String EXTRA_RESULT = "result_value";
 
     public Algorithm() {
         super("Google Fused Location");
@@ -93,6 +96,7 @@ public class Algorithm extends IntentService {
                     invokeWS(offlineUpload);
                     offlineUpload = "";
                 }
+                Log.i("READ ME", "Invoking WS...");
                 invokeWS(stringUrl);
             } else {
                 //textView.setText("No network connection available.");
@@ -118,6 +122,11 @@ public class Algorithm extends IntentService {
 
         client.get(addressWS ,new AsyncHttpResponseHandler() {
             @Override
+            public void onStart() {
+                Log.i("READ ME", "starting WS...");
+            }
+
+            @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
                     JSONObject obj = new JSONObject(new String(responseBody));
@@ -125,7 +134,7 @@ public class Algorithm extends IntentService {
                     Log.i("successStatus: ", successStatus.toString());
                     String serverResponse = obj.getJSONObject(MESSAGE).getString(SERVER_STATUS);
                     Toast.makeText(getApplicationContext(), serverResponse, Toast.LENGTH_LONG).show();
-
+                    Log.i("READ ME", "success!");
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(), "Server response might be invalid!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
