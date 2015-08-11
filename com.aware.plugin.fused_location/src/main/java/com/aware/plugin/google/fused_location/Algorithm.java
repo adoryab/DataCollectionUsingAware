@@ -82,12 +82,14 @@ public class Algorithm extends IntentService {
             //INSERT CODE HERE
 
             //check connectivity
-            String deviceName = android.provider.Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);;
-            String stringUrl = "http://ridesharing.cmu-tbank.com/reportActivityForAware.php?userID=1&locations=";
-            String instanceInformation = base64Encoder(deviceName)+"@"+System.currentTimeMillis()/1000+"@"+base64Encoder(timeZoneBuilder())+"@"+bestLocation.getLatitude()+"@"+bestLocation.getLongitude();
-            stringUrl = stringUrl+instanceInformation;
-                    Log.i("READ ME PLEASE", stringUrl);
-
+           // String deviceName = android.provider.Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);;
+            String deviceName = "testingDataUpload";
+            String stringUrl = "http://ridesharing.cmu-tbank.com/reportActivityForAware.php?userID=1&";
+            String instanceInformation = "locations="+base64Encoder(deviceName)+"@"+System.currentTimeMillis()/1000+"@"+base64Encoder(timeZoneBuilder())+"@"+bestLocation.getLatitude()+"@"+bestLocation.getLongitude();
+            String batchUpload = stringUrl+instanceInformation;
+                    Log.i("READ ME PLEASE", batchUpload);
+            String singleInstance = "deviceID="+base64Encoder(deviceName)+"&currentTime="+System.currentTimeMillis()/1000+"&timeZone="+base64Encoder(timeZoneBuilder())+"&lat="+bestLocation.getLatitude()+"&lng="+bestLocation.getLongitude();
+                Log.i("READ ME PLEASE", "for single " + stringUrl+singleInstance);
             ConnectivityManager connMgr = (ConnectivityManager)
                     getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -97,12 +99,12 @@ public class Algorithm extends IntentService {
                     offlineUpload = "";
                 }
                 Log.i("READ ME", "Invoking WS...");
-                invokeWS(stringUrl);
+                invokeWS(singleInstance);
             } else {
                 //textView.setText("No network connection available.");
                 Log.i("THIS IS FOR LOCATIONS", "No connection available");
                 if (offlineUpload.length() == 0) {
-                    offlineUpload = offlineUpload + stringUrl;
+                    offlineUpload = offlineUpload + batchUpload;
                 } else {
                     offlineUpload = offlineUpload +"*"+ instanceInformation;
                 }
