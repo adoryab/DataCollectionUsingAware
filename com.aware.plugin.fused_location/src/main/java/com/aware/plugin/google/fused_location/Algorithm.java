@@ -5,12 +5,15 @@ package com.aware.plugin.google.fused_location;
 
 import android.annotation.TargetApi;
 import android.app.IntentService;
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.BatteryManager;
 import android.os.Build;
 import android.provider.*;
 import android.provider.Settings;
@@ -46,6 +49,8 @@ public class Algorithm extends IntentService {
     public static final String ACTION_RESULT_RECEIVED = "result_received";
     public static final String EXTRA_RESULT = "result_value";
 
+
+
     public Algorithm() {
         super("Google Fused Location");
     }
@@ -53,6 +58,8 @@ public class Algorithm extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+
+
 
         boolean DEBUG = Aware.getSetting(getApplicationContext(), Aware_Preferences.DEBUG_FLAG).equals("true");
 
@@ -82,8 +89,7 @@ public class Algorithm extends IntentService {
             //INSERT CODE HERE
 
             //check connectivity
-           // String deviceName = android.provider.Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);;
-            String deviceName = "testingDataUpload";
+            String deviceName = android.provider.Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);;
             String stringUrl = "http://ridesharing.cmu-tbank.com/reportActivityForAware.php?userID=1&";
             String instanceInformation = "locations="+base64Encoder(deviceName)+"@"+System.currentTimeMillis()/1000+"@"+base64Encoder(timeZoneBuilder())+"@"+bestLocation.getLatitude()+"@"+bestLocation.getLongitude();
             String batchUpload = stringUrl+instanceInformation;
@@ -99,7 +105,8 @@ public class Algorithm extends IntentService {
                     offlineUpload = "";
                 }
                 Log.i("READ ME", "Invoking WS...");
-                invokeWS(singleInstance);
+                invokeWS(stringUrl+singleInstance);
+
             } else {
                 //textView.setText("No network connection available.");
                 Log.i("THIS IS FOR LOCATIONS", "No connection available");
@@ -157,8 +164,6 @@ public class Algorithm extends IntentService {
             }
         });
     }
-
-
 
 
 
