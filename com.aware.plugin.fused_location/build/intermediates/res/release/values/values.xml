@@ -8,7 +8,7 @@
         <item>Low accuracy (network only)</item>
         <item>Opportunistic (reused location)</item>
     </string-array>
-    <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.awareframework/aware-core/3.4.9/res/values/values.xml -->
+    <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.awareframework/aware-core/3.5.3/res/values/values.xml -->
     <eat-comment/>
     <string-array name="clean_old_data_readable">
         <item>Never</item>
@@ -45,7 +45,7 @@
     <bool name="abc_config_allowActionMenuItemTextWithIcon">false</bool>
     <bool name="abc_config_closeDialogWhenTouchOutside">true</bool>
     <bool name="abc_config_showMenuShortcutsWhenKeyboardPresent">false</bool>
-    <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.awareframework/aware-core/3.4.9/res/values/values.xml -->
+    <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.awareframework/aware-core/3.5.3/res/values/values.xml -->
     <eat-comment/>
     <item format="boolean" name="display_aware" type="bool">false</item>
     <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
@@ -68,7 +68,7 @@
     <color name="bright_foreground_material_light">@android:color/black</color>
     <color name="button_material_dark">#ff5a595b</color>
     <color name="button_material_light">#ffd6d7d7</color>
-    <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.awareframework/aware-core/3.4.9/res/values/values.xml -->
+    <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.awareframework/aware-core/3.5.3/res/values/values.xml -->
     <eat-comment/>
     <color name="card_shadow">#AFAFAF</color>
     <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.android.support/cardview-v7/22.2.0/res/values/values.xml -->
@@ -95,7 +95,7 @@
     <color name="dim_foreground_disabled_material_light">#80323232</color>
     <color name="dim_foreground_material_dark">#ffbebebe</color>
     <color name="dim_foreground_material_light">#ff323232</color>
-    <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.awareframework/aware-core/3.4.9/res/values/values.xml -->
+    <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.awareframework/aware-core/3.5.3/res/values/values.xml -->
     <eat-comment/>
     <color name="grey_background">#E5E5E5</color>
     <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
@@ -296,7 +296,7 @@
     <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="app_name">Google Fused Location</string>
-    <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.awareframework/aware-core/3.4.9/res/values/values.xml -->
+    <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.awareframework/aware-core/3.5.3/res/values/values.xml -->
     <eat-comment/>
     <string name="aware_activate_accessibility">Activate AWARE in Accessibility Services.</string>
     <string name="aware_auto_update">Check for updates</string>
@@ -309,6 +309,8 @@
     <string name="aware_description">AWARE is an Android\'s framework dedicated to infer, log and share mobile context information between mobile applications. Visit www.awareframework.com for details.</string>
     <string name="aware_developer">Developer</string>
     <string name="aware_device_id">AWARE Device ID</string>
+    <string name="aware_esm_other">Other</string>
+    <string name="aware_esm_other_follow">Can you be more specific, please?</string>
     <string name="aware_esm_questions">Mobile ESM waiting...</string>
     <string name="aware_plugins">AWARE Plugins</string>
     <string name="aware_qrcode">QRCode</string>
@@ -351,7 +353,7 @@
     <string name="create_calendar_message">Allow Ad to create a calendar event?</string>
     <string name="create_calendar_title">Create calendar event</string>
     <string name="decline">Decline</string>
-    <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.awareframework/aware-core/3.4.9/res/values/values.xml -->
+    <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.awareframework/aware-core/3.5.3/res/values/values.xml -->
     <eat-comment/>
     <string name="drawer_close">Closed</string>
     <string name="drawer_open">Opened</string>
@@ -366,7 +368,7 @@
     <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.5.87/res/values/wallet_strings.xml -->
     <eat-comment/>
     <string name="wallet_buy_button_place_holder" translation_description="Text on a button that allows a user to make a payment with Google Wallet [CHAR LIMIT=30]">Buy with Google</string>
-    <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.awareframework/aware-core/3.4.9/res/values/values.xml -->
+    <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.awareframework/aware-core/3.5.3/res/values/values.xml -->
     <eat-comment/>
     <string name="write_permission">Allow read and write access to the Context Providers data.</string>
     <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
@@ -387,7 +389,7 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-    <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.awareframework/aware-core/3.4.9/res/values/values.xml -->
+    <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.awareframework/aware-core/3.5.3/res/values/values.xml -->
     <eat-comment/>
     <style name="Aware.Toolbar" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:layout_gravity">center_vertical</item>
@@ -1562,7 +1564,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.awareframework/aware-core/3.4.9/res/values/values.xml -->
+    <!-- From: file:/Users/patrick/Documents/DataCollectionUsingAware/com.aware.plugin.fused_location/build/intermediates/exploded-aar/com.awareframework/aware-core/3.5.3/res/values/values.xml -->
     <eat-comment/>
     <style name="Theme.Aware" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowActionBar">false</item>

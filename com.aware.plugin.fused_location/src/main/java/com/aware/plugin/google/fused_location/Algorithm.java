@@ -5,12 +5,15 @@ package com.aware.plugin.google.fused_location;
 
 import android.annotation.TargetApi;
 import android.app.IntentService;
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.BatteryManager;
 import android.os.Build;
 import android.provider.*;
 import android.provider.Settings;
@@ -41,6 +44,11 @@ public class Algorithm extends IntentService {
     private static final String SUCCESS = "success";
     private static final String MESSAGE = "message";
     private static final String SERVER_STATUS = "status";
+    public static final String LAST_LOCATION_TIMESTAMP = "lastLocationReport";
+    public static final String LAST_ACTIVITY_TIMESTAMP = "lastActivityReport";
+    public static final String ACTION_RESULT_RECEIVED = "result_received";
+    public static final String EXTRA_RESULT = "result_value";
+
 
 
     public Algorithm() {
@@ -50,6 +58,8 @@ public class Algorithm extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+
+
 
         boolean DEBUG = Aware.getSetting(getApplicationContext(), Aware_Preferences.DEBUG_FLAG).equals("true");
 
@@ -80,11 +90,12 @@ public class Algorithm extends IntentService {
 
             //check connectivity
             String deviceName = android.provider.Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);;
-            String stringUrl = "http://ridesharing.cmu-tbank.com/reportActivityForAware.php?userID=1&locations=";
-            String instanceInformation = base64Encoder(deviceName)+"@"+System.currentTimeMillis()/1000+"@"+base64Encoder(timeZoneBuilder())+"@"+bestLocation.getLatitude()+"@"+bestLocation.getLongitude();
-            stringUrl = stringUrl+instanceInformation;
-                    Log.i("READ ME PLEASE", stringUrl);
-
+            String stringUrl = "http://ridesharing.cmu-tbank.com/reportActivityForAware.php?userID=1&";
+            String instanceInformation = "locations="+base64Encoder(deviceName)+"@"+System.currentTimeMillis()/1000+"@"+base64Encoder(timeZoneBuilder())+"@"+bestLocation.getLatitude()+"@"+bestLocation.getLongitude();
+            String batchUpload = stringUrl+instanceInformation;
+                    Log.i("READ ME PLEASE", batchUpload);
+            String singleInstance = "deviceID="+base64Encoder(deviceName)+"&currentTime="+System.currentTimeMillis()/1000+"&timeZone="+base64Encoder(timeZoneBuilder())+"&lat="+bestLocation.getLatitude()+"&lng="+bestLocation.getLongitude();
+                Log.i("READ ME PLEASE", "for single " + stringUrl+singleInstance);
             ConnectivityManager connMgr = (ConnectivityManager)
                     getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -93,12 +104,14 @@ public class Algorithm extends IntentService {
                     invokeWS(offlineUpload);
                     offlineUpload = "";
                 }
-                invokeWS(stringUrl);
+                Log.i("READ ME", "Invoking WS...");
+                invokeWS(stringUrl+singleInstance);
+
             } else {
                 //textView.setText("No network connection available.");
                 Log.i("THIS IS FOR LOCATIONS", "No connection available");
                 if (offlineUpload.length() == 0) {
-                    offlineUpload = offlineUpload + stringUrl;
+                    offlineUpload = offlineUpload + batchUpload;
                 } else {
                     offlineUpload = offlineUpload +"*"+ instanceInformation;
                 }
@@ -118,6 +131,11 @@ public class Algorithm extends IntentService {
 
         client.get(addressWS ,new AsyncHttpResponseHandler() {
             @Override
+            public void onStart() {
+                Log.i("READ ME", "starting WS...");
+            }
+
+            @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
                     JSONObject obj = new JSONObject(new String(responseBody));
@@ -125,7 +143,7 @@ public class Algorithm extends IntentService {
                     Log.i("successStatus: ", successStatus.toString());
                     String serverResponse = obj.getJSONObject(MESSAGE).getString(SERVER_STATUS);
                     Toast.makeText(getApplicationContext(), serverResponse, Toast.LENGTH_LONG).show();
-
+                    Log.i("READ ME", "success!");
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(), "Server response might be invalid!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
@@ -146,8 +164,6 @@ public class Algorithm extends IntentService {
             }
         });
     }
-
-
 
 
 
