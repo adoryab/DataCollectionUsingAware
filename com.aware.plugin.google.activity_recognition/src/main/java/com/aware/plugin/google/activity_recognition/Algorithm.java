@@ -97,10 +97,14 @@ public class Algorithm extends IntentService {
             context.putExtra( Plugin.EXTRA_CONFIDENCE, Plugin.current_confidence );
             sendBroadcast( context );
             Log.i("README","NEW ACTIVITY DETECTED");
-            String deviceName = android.provider.Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);;
-            String stringUrl = "http://ridesharing.cmu-tbank.com/reportActivityForAware.php?userID=1&activities=";
+            String deviceName = Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_ID);
+            String stringUrl = "http://ridesharing.cmu-tbank.com/reportActivityForAware.php?userID=1&";
+            String onTheFly = stringUrl + "deviceID=" + base64Encoder(deviceName)+"&currentTime="+System.currentTimeMillis()/1000+
+                    "&timeZone="+base64Encoder(timeZoneBuilder())+"&activity="+Plugin.current_activity+"&activityConfidence="
+                    +Plugin.current_confidence;
             String instanceInformation = base64Encoder(deviceName)+"@"+System.currentTimeMillis()/1000+"@"+base64Encoder(timeZoneBuilder())+"@"+Plugin.current_activity+"@"+Plugin.current_confidence;
             stringUrl = stringUrl+instanceInformation;
+
             Log.i("THIS IS FOR ACTIVITIES", stringUrl);
 
             ConnectivityManager connMgr = (ConnectivityManager)
@@ -111,12 +115,12 @@ public class Algorithm extends IntentService {
                     invokeWS(offlineUpload);
                     offlineUpload = "";
                 }
-                invokeWS(stringUrl);
+                invokeWS(onTheFly);
             } else {
                 //textView.setText("No network connection available.");
                 Log.i("READ ME PLEASE", "No connection available");
                 if (offlineUpload.length() == 0) {
-                    offlineUpload = offlineUpload + stringUrl;
+                    offlineUpload = offlineUpload + stringUrl + "activities" + instanceInformation;
                 } else {
                     offlineUpload = offlineUpload +"*"+ instanceInformation;
                 }
