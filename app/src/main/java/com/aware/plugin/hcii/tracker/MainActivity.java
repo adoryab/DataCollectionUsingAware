@@ -23,6 +23,7 @@ import com.aware.plugin.google.fused_location.Algorithm;
 import com.aware.providers.Aware_Provider;
 import com.aware.providers.Locations_Provider;
 import com.aware.ui.Aware_Activity;
+import com.aware.utils.Aware_Plugin;
 import com.google.android.gms.location.ActivityRecognition;
 
 import java.util.ArrayList;
@@ -169,7 +170,6 @@ public class MainActivity extends Activity {
                 String.valueOf(timestamp)
         };
 
-        Log.i("READ ME", "get here fine (2)");
         try {
             Cursor locationCursor = getContentResolver().query(Google_AR_Provider.Google_Activity_Recognition_Data.CONTENT_URI,
                     projection,
@@ -177,17 +177,13 @@ public class MainActivity extends Activity {
                     selectionArgs,
                     null);
             locationCursor.moveToFirst();
-            Log.i("READ ME", "get here fine (3)");
             String uploadUrl = "";
             while (!locationCursor.isAfterLast()) {
                 count++;
                 Double timestampDouble = locationCursor.getDouble(locationCursor.getColumnIndexOrThrow(Locations_Provider.Locations_Data.TIMESTAMP))/1000;
-
                 String activityString = locationCursor.getString(locationCursor.getColumnIndexOrThrow(Google_AR_Provider.Google_Activity_Recognition_Data.ACTIVITY_NAME));
-                Log.i("READ ME", activityString);
-                String confidenceString =locationCursor.getString(locationCursor.getColumnIndexOrThrow(Google_AR_Provider.Google_Activity_Recognition_Data.CONFIDENCE));
+               String confidenceString =locationCursor.getString(locationCursor.getColumnIndexOrThrow(Google_AR_Provider.Google_Activity_Recognition_Data.CONFIDENCE));
                 uploadUrl = batchBuilderForActivity(uploadUrl, deviceID, scientificNotationConverter(timestampDouble), activityString, confidenceString);
-
                 locationCursor.moveToNext();
                 if (count%10==0 && !uploadUrl.isEmpty()) {
                     Algorithm.invokeWS(uploadUrl);
@@ -200,7 +196,6 @@ public class MainActivity extends Activity {
             SharedPreferences.Editor editor = sp.edit();
             editor.putLong(lastActivityDbUpload, (Long) (System.currentTimeMillis()));
             editor.commit();
-            Log.i("READ ME 1", "UPDATING LAST UPLOAD TIME");
             Log.i("READ ME 1 ", "activity data last uploaded "+sp.getLong(lastActivityDbUpload,0));
 
         } catch (Exception e) {
