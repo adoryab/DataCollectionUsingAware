@@ -38,7 +38,6 @@ import com.google.android.gms.location.DetectedActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
-import org.apache.http.Header;
 
 public class Algorithm extends IntentService {
 
@@ -54,6 +53,10 @@ public class Algorithm extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        // Called when a new intent is registered
+        // writes the data locally in a SQLite DB
+        // Adds the data to the webservice's DB if there is internet connection
+
 
         if (ActivityRecognitionResult.hasResult(intent)) {
             
@@ -126,6 +129,7 @@ public class Algorithm extends IntentService {
     }
 
     public static String getActivityName(int type) {
+        //returns the most probable type of activity based on sensor data
         switch (type) {
             case DetectedActivity.IN_VEHICLE:
                 return "in_vehicle";
@@ -149,11 +153,12 @@ public class Algorithm extends IntentService {
     }
 
     public void invokeWS(String addressWS){
+        // sends the data to the webservice and shows via toast if the call was successful
         AsyncHttpClient client = new AsyncHttpClient();
 
         client.get(addressWS ,new AsyncHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                 try {
                     JSONObject obj = new JSONObject(new String(responseBody));
                     Boolean successStatus = obj.getBoolean(SUCCESS);
@@ -167,8 +172,9 @@ public class Algorithm extends IntentService {
 
                 }
             }
+
             @Override
-            public void onFailure(int statusCode, Header [] headers, byte[] responseBody, Throwable error) {
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
                 if(statusCode == 404){
                     Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
                 }
