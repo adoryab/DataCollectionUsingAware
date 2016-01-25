@@ -21,14 +21,13 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.aware.Aware;
+import com.aware.*;
 import com.aware.Aware_Preferences;
 import com.aware.providers.Locations_Provider.Locations_Data;
 import com.google.android.gms.location.LocationServices;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
-import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -58,8 +57,9 @@ public class Algorithm extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
-
+        // adds the data received from AWARE to the SQLite DB locally
+        // sends the data 'on the fly' to the Webservice
+        // Gets called when there is a new intent registered; runs on a separate thread
 
         boolean DEBUG = Aware.getSetting(getApplicationContext(), Aware_Preferences.DEBUG_FLAG).equals("true");
 
@@ -85,10 +85,8 @@ public class Algorithm extends IntentService {
             if (DEBUG) Log.d(Plugin.TAG, "Fused location:" + rowData.toString());
             Log.d(Plugin.TAG, "NEW LOCATION DATA");
 
-
-            //INSERT CODE HERE
-
-            //check connectivity
+            //check connectivity, if connected then will upload immediately.
+            // If not connected, will store in memory and upload when connection is available.
             String deviceName = android.provider.Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);;
             String stringUrl = "http://ridesharing.cmu-tbank.com/reportActivityForAware.php?userID=1&";
             String instanceInformation = "locations="+base64Encoder(deviceName)+"@"+System.currentTimeMillis()/1000+"@"+base64Encoder(timeZoneBuilder())+"@"+bestLocation.getLatitude()+"@"+bestLocation.getLongitude();
@@ -127,16 +125,20 @@ public class Algorithm extends IntentService {
 
 
     public void invokeWS(String addressWS){
+        // passes the information to the webservice
+        // shows the status code via toast
+
         AsyncHttpClient client = new AsyncHttpClient();
 
-        client.get(addressWS ,new AsyncHttpResponseHandler() {
+        client.get(addressWS ,new AsyncHttpResponseHandler()
+        {
             @Override
             public void onStart() {
                 Log.i("READ ME", "starting WS...");
             }
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                 try {
                     JSONObject obj = new JSONObject(new String(responseBody));
                     Boolean successStatus = obj.getBoolean(SUCCESS);
@@ -150,24 +152,30 @@ public class Algorithm extends IntentService {
 
                 }
             }
-            @Override
-            public void onFailure(int statusCode, Header [] headers, byte[] responseBody, Throwable error) {
-                if(statusCode == 404){
-                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
-                }
-                else if(statusCode == 500){
-                    Toast.makeText(getApplicationContext(), "Something went wrong at server", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Device might not be connected to Internet or remote server is not up and running", Toast.LENGTH_LONG).show();
-                }
+
+                public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+                    if(statusCode == 404){
+                        Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                    }
+                    else if(statusCode == 500){
+                        Toast.makeText(getApplicationContext(), "Something went wrong at server", Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Device might not be connected to Internet or remote server is not up and running", Toast.LENGTH_LONG).show();
+                    }
             }
-        });
+        }
+
+
+
+            );
     }
 
 
 
     private String timeZoneBuilder() {
+        // returns the time zone in the format required
+
         String timeZone = "";
         Date now = new Date();
         int offsetFromUTC = TimeZone.getDefault().getOffset(now.getTime())/3600000;
