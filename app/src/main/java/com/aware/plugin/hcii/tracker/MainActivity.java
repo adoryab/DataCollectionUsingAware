@@ -11,13 +11,15 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.aware.Aware;
-import com.aware.plugin.google.fused_location.Algorithm;
+
 
 /**
  * Created by denzil on 30/06/15.
  */
 public class MainActivity extends Activity {
-//
+    
+    // edit time in between intents here
+    
     public static final String lastDbUpload = "last_database_upload";
     public static SharedPreferences sp;
     private static final String MY_REFERENCES = "MyRefs";
